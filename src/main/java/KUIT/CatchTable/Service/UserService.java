@@ -56,7 +56,7 @@ public class UserService {
 
     private void validatePassword(String password, long userId) {
         String signedPassword = userDao.getPasswordByUserId(userId);
-        if(signedPassword != password ){
+        if(!signedPassword.equals(password) ){
             throw new UserException(PASSWORD_NO_MATCH);
         }
     }

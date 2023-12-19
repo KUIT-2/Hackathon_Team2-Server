@@ -11,10 +11,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import static KUIT.CatchTable.Common.response.BaseResponseStatus.INVALID_USER_VALUE;
 import static KUIT.CatchTable.util.BindingResultUtils.getErrorMessages;
@@ -22,7 +19,7 @@ import static KUIT.CatchTable.util.BindingResultUtils.getErrorMessages;
 @Slf4j
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/users")
+@RequestMapping("/user")
 public class UserController {
     private final UserService userService;
 
@@ -42,7 +39,7 @@ public class UserController {
     /**
      * 로그인
      */
-    @PostMapping("/login")
+    @GetMapping("/login")
     public BaseResponse<LoginResponse> login(@Validated @RequestBody LoginRequest loginRequest, BindingResult bindingResult){
         log.info("[UserController.login]");
         if(bindingResult.hasErrors()){

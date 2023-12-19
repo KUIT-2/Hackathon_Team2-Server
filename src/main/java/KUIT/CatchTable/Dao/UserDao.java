@@ -22,7 +22,7 @@ public class UserDao {
     }
 
     public long createUser(PostUserRequest postUserRequest) {
-        String sql = "insert into User(id, password, name, phone) " + "values(:id, :password, :name, :phone)";
+        String sql = "insert into User(id, password, name, phone_number) " + "values(:id, :password, :name, :phoneNumber)";
 
         SqlParameterSource parameterSource = new BeanPropertySqlParameterSource(postUserRequest);
         KeyHolder keyHolder = new GeneratedKeyHolder();
