@@ -5,6 +5,7 @@ import KUIT.CatchTable.Dto.store.GetCategoryStoreResponse;
 import KUIT.CatchTable.Dto.store.GetDetailedStoreResponse;
 import KUIT.CatchTable.Dto.store.GetFacilityStoreResponse;
 import KUIT.CatchTable.Dto.store.GetMenuStoreResponse;
+import KUIT.CatchTable.Dto.store.GetReviewStoreResponse;
 import KUIT.CatchTable.Service.StoreService;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -55,6 +56,9 @@ public class StoreController {
         return new BaseResponse<>(storeService.getMenuStore(storeId));
     }
 
+    /**
+     * 핫플레이스 리스트
+     */
     @GetMapping("/hotplace")
     public BaseResponse<List<GetCategoryStoreResponse>> getHotplaceStore() {
         log.info("[StoreController.getHotplace]");
@@ -62,8 +66,16 @@ public class StoreController {
         return new BaseResponse<>(storeService.getHotplaceStore());
     }
 
-//    @GetMapping("review/{storeId}")
-//    public BaseResponse<List<>>
+    /**
+     * 가게 리뷰 리스트
+     */
+    @GetMapping("review/{storeId}")
+    public BaseResponse<List<GetReviewStoreResponse>> getReviewStore(
+            @PathVariable("storeId") long storeId) {
+        log.info("[StoreController.getReview]");
+
+        return new BaseResponse<>(storeService.getReviewStore(storeId));
+    }
 }
 
 //
