@@ -8,10 +8,9 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class GetReviewStoreResponse {
 
-//    private String userName;
-//    private float avgScore;
-//    private
-//    private String reviewImage;
-//    private String review;
-
+    private String userName;
+    private float avgScore;
+    private String createAt;
+    private String reviewImage;
+    private String review;
 }
