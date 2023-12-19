@@ -48,11 +48,11 @@ public class StoreDao {
 
     public List<GetCategoryStoreResponse> getCategoryStore(long categoryId) {
         String sql =
-                "select store.store_name, store.store_desc, store_image.store_image, avg(review.total_score) as avg_score, count(review.total_stars) as total_score "
+                "select store.store_name, store.store_desc, store_image.store_image, avg(review.total_stars) as avg_score, count(review.total_stars) as total_score "
                         + "from store join store_image on store.store_id = store_image.store_id "
                         + "join review on store.store_id = review.store_id "
                         + "where store.category_id = :categoryId";
-        Map<String, Object> param = Map.of("category_id", categoryId);
+        Map<String, Object> param = Map.of("categoryId", categoryId);
         return jdbcTemplate.query(sql, param,
                 (rs, rowNum) -> new GetCategoryStoreResponse(
                         rs.getString("store_image"),
@@ -76,5 +76,22 @@ public class StoreDao {
                 rs.getFloat("avg_score"),
                 rs.getInt("total_score")
         ));
+    }
+
+    public List<GetReviewStoreResponse> getReviewStore(long storeId) {
+        String sql =
+                "select user.name, review.total_stars, review.created_at, review.review_image, review.review "
+                        + "from review join user on review.user_id = user.user_id "
+                        + "join review_image on review.review_id = review_image.review_id "
+                        + "where review.store_id = :storeId";
+        Map<String, Object> param = Map.of("storeId", storeId);
+        return jdbcTemplate.query(sql, param,
+                (rs, rowNum) -> new GetReviewStoreResponse(
+                        rs.getString("name"),
+                        rs.getFloat("total_stars"),
+                        rs.getString("created_at"),
+                        rs.getString("review_image"),
+                        rs.getString("review")
+                ));
     }
 }

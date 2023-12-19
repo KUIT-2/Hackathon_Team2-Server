@@ -13,6 +13,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+
 import static KUIT.CatchTable.Common.response.BaseResponseStatus.INVALID_USER_VALUE;
 import static KUIT.CatchTable.util.BindingResultUtils.getErrorMessages;
 
@@ -39,7 +40,7 @@ public class UserController {
     /**
      * 로그인
      */
-    @GetMapping("/login")
+    @PostMapping("/login")
     public BaseResponse<LoginResponse> login(@Validated @RequestBody LoginRequest loginRequest, BindingResult bindingResult){
         log.info("[UserController.login]");
         if(bindingResult.hasErrors()){
