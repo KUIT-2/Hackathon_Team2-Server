@@ -4,6 +4,7 @@ import KUIT.CatchTable.Common.response.BaseResponse;
 import KUIT.CatchTable.Dto.store.GetCategoryStoreResponse;
 import KUIT.CatchTable.Dto.store.GetDetailedStoreResponse;
 import KUIT.CatchTable.Dto.store.GetFacilityStoreResponse;
+import KUIT.CatchTable.Dto.store.GetHotPlaceResponse;
 import KUIT.CatchTable.Dto.store.GetMenuStoreResponse;
 import KUIT.CatchTable.Dto.store.GetReviewStoreResponse;
 import KUIT.CatchTable.Service.StoreService;
@@ -60,7 +61,7 @@ public class StoreController {
      * 핫플레이스 리스트
      */
     @GetMapping("/hotplace")
-    public BaseResponse<List<GetCategoryStoreResponse>> getHotplaceStore() {
+    public BaseResponse<List<GetHotPlaceResponse>> getHotplaceStore() {
         log.info("[StoreController.getHotplace]");
 
         return new BaseResponse<>(storeService.getHotplaceStore());

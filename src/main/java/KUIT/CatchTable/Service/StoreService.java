@@ -1,11 +1,14 @@
 package KUIT.CatchTable.Service;
 
+import static KUIT.CatchTable.Common.response.BaseResponseStatus.CATEGORY_ID_NOT_FOUND;
 import static KUIT.CatchTable.Common.response.BaseResponseStatus.DATABASE_ERROR;
+import static KUIT.CatchTable.Common.response.BaseResponseStatus.STORE_ID_NOT_FOUND;
 
 import KUIT.CatchTable.Dao.StoreDao;
 import KUIT.CatchTable.Dto.store.GetCategoryStoreResponse;
 import KUIT.CatchTable.Dto.store.GetDetailedStoreResponse;
 import KUIT.CatchTable.Dto.store.GetFacilityStoreResponse;
+import KUIT.CatchTable.Dto.store.GetHotPlaceResponse;
 import KUIT.CatchTable.Dto.store.GetMenuStoreResponse;
 import KUIT.CatchTable.Dto.store.GetReviewStoreResponse;
 import KUIT.CatchTable.Exception.StoreException;
@@ -28,7 +31,7 @@ public class StoreService {
         try {
             return storeDao.getDetailedStore(storeId);
         } catch (EmptyResultDataAccessException e) {
-            throw new StoreException(DATABASE_ERROR);
+            throw new StoreException(STORE_ID_NOT_FOUND);
         }
     }
 
@@ -44,7 +47,7 @@ public class StoreService {
         try {
             return storeDao.getCategoryStore(categoryId);
         } catch (EmptyResultDataAccessException e) {
-            throw new StoreException(DATABASE_ERROR);
+            throw new StoreException(CATEGORY_ID_NOT_FOUND);
         }
     }
 
@@ -54,11 +57,11 @@ public class StoreService {
         try {
             return storeDao.getMenuStore(storeId);
         } catch (EmptyResultDataAccessException e) {
-            throw new StoreException(DATABASE_ERROR);
+            throw new StoreException(STORE_ID_NOT_FOUND);
         }
     }
 
-    public List<GetCategoryStoreResponse> getHotplaceStore() {
+    public List<GetHotPlaceResponse> getHotplaceStore() {
         log.info("[StoreService.getHotplaceStore]");
 
         return storeDao.getHotplaceStore();
@@ -70,7 +73,7 @@ public class StoreService {
         try {
             return storeDao.getReviewStore(storeId);
         } catch (EmptyResultDataAccessException e) {
-            throw new StoreException(DATABASE_ERROR);
+            throw new StoreException(STORE_ID_NOT_FOUND);
         }
     }
 }
