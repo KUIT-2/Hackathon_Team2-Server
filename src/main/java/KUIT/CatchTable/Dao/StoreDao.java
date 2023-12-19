@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Map;
 import javax.sql.DataSource;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
 
@@ -24,19 +25,20 @@ public class StoreDao {
 
     public GetDetailedStoreResponse getDetailedStore(long storeId) {
         String sql =
-                "select store.store_name, store.store_desc, store_image.store_image, avg(review.total_stars), count(review.total_stars), category.category_name, store.address "
+                "select store.store_name, store.store_desc, store_image.store_image, avg(review.total_stars) as avg_score, count(review.total_stars) as count_score, category.category_name, store.address "
                         + "from store join store_image on store.store_id = store_image.store_id "
                         + "join review on store.store_id = review.store_id "
-                        + "join store.category_id = category.category_id "
-                        + "where store_id = :storeId";
+                        + "join category on store.category_id = category.category_id "
+                        + "where store.store_id = :store_id "
+                        + "group by store.store_name, store.store_desc, store_image.store_image, category.category_name, store.address";
         Map<String, Object> param = Map.of("store_id", storeId);
-        return jdbcTemplate.queryForObject(sql, param, GetDetailedStoreResponse.class);
+        return jdbcTemplate.queryForObject(sql, param, new BeanPropertyRowMapper<>(GetDetailedStoreResponse.class));
     }
 
     public List<GetMenuStoreResponse> getMenuStore(long storeId) {
         String sql = "select menu_name, price "
                 + "from menu "
-                + "where store_id=:storeId";
+                + "where store_id=:store_id";
 
         Map<String, Object> param = Map.of("store_id", storeId);
         return jdbcTemplate.query(sql, param,
@@ -48,10 +50,11 @@ public class StoreDao {
 
     public List<GetCategoryStoreResponse> getCategoryStore(long categoryId) {
         String sql =
-                "select store.store_name, store.store_desc, store_image.store_image, avg(review.total_stars) as avg_score, count(review.total_stars) as total_score "
+                "select store.store_name, store.store_desc, store_image.store_image, avg(review.total_stars) as avg_score, count(review.total_stars) as count_score "
                         + "from store join store_image on store.store_id = store_image.store_id "
                         + "join review on store.store_id = review.store_id "
-                        + "where store.category_id = :categoryId";
+                        + "where store.category_id = :categoryId "
+                        + "group by store.store_name, store.store_desc, store_image.store_image";
         Map<String, Object> param = Map.of("categoryId", categoryId);
         return jdbcTemplate.query(sql, param,
                 (rs, rowNum) -> new GetCategoryStoreResponse(
@@ -59,28 +62,29 @@ public class StoreDao {
                         rs.getString("store_name"),
                         rs.getString("store_desc"),
                         rs.getFloat("avg_score"),
-                        rs.getInt("total_score")
+                        rs.getInt("count_score")
                 ));
     }
 
     public List<GetCategoryStoreResponse> getHotplaceStore() {
         String sql =
-                "select store.store_name, store.store_desc, store_image.store_image, avg(review.total_score) as avg_score, count(review.total_stars) as total_score "
+                "select store.store_name, store.store_desc, store_image.store_image, avg(review.total_stars) as avg_score, count(review.total_stars) as count_score "
                         + "from store join store_image on store.store_id = store_image.store_id "
                         + "join review on store.store_id = review.store_id "
-                        + "where store.hot_place = true";
+                        + "where store.hot_place = true "
+                        + "group by store.store_name, store.store_desc, store_image.store_image";
         return jdbcTemplate.query(sql, (rs, rowNum) -> new GetCategoryStoreResponse(
                 rs.getString("store_image"),
                 rs.getString("store_name"),
                 rs.getString("store_desc"),
                 rs.getFloat("avg_score"),
-                rs.getInt("total_score")
+                rs.getInt("count_score")
         ));
     }
 
     public List<GetReviewStoreResponse> getReviewStore(long storeId) {
         String sql =
-                "select user.name, review.total_stars, review.created_at, review.review_image, review.review "
+                "select user.name, review.total_stars, review.created_at, review_image.review_image, review.review "
                         + "from review join user on review.user_id = user.user_id "
                         + "join review_image on review.review_id = review_image.review_id "
                         + "where review.store_id = :storeId";
