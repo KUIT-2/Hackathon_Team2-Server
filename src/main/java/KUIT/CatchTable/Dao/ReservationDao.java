@@ -32,16 +32,13 @@ public class ReservationDao {
     }
 
     public boolean isFullResevation(long storeId, String reserveDay, String reserveTime, int reserveCount) {
-        String sql = "select spt.possible_people_number from Reservation r " +
-                "join Store s on r.store_id=s.store_id " +
-                "join Store_possible_reservation_by_time spt on r.store_id=spt.store_id " +
-                "where r.store_id=:store_id and r.reservation_day=:reserveDay and r.reservation_day=spt.day and r.reservation_time=:reserveTime and r.reservation_time=spt.time";
+        String sql = "select possible_people_number from store_possible_reservation_by_time where store_id=:storeId and day=:reserveDay and time=:reserveTime";
         Map<String, Object> param = Map.of(
-                "store_id", storeId,
+                "storeId", storeId,
                 "reserveDay", reserveDay,
                 "reserveTime", reserveTime);
         int possible_people_number = jdbcTemplate.queryForObject(sql,param, Integer.class);
-        if(possible_people_number-reserveCount <= 0) return true;
+        if(possible_people_number-reserveCount < 0) return true;
         else{
             String updateSql = "update Store_possible_reservation_by_time set possible_people_number=:update_people_number where store_id=:store_id and day=:reserveDay and time=:reserveTime";
             Map<String, Object> updateParam = Map.of(
@@ -56,8 +53,8 @@ public class ReservationDao {
     }
 
     public List<GetReservationResponse> getPossibleReservationTime(long storeId, String day, int reserveCount) {
-        String sql = "select time from Store_possible_reservation_by_time " +
-                "where store_id=:storeId and day=:day and possible_people_number=:reserveCount and possible_people_number>=reserveCount";
+        String sql = "select time from store_possible_reservation_by_time " +
+                "where store_id=:storeId and day=:day and possible_people_number>=:reserveCount";
         Map<String, Object> param = Map.of(
                 "storeId", storeId,
                 "day", day,
