@@ -3,6 +3,7 @@ package KUIT.CatchTable.Dao;
 import KUIT.CatchTable.Dto.store.GetCategoryStoreResponse;
 import KUIT.CatchTable.Dto.store.GetDetailedStoreResponse;
 import KUIT.CatchTable.Dto.store.GetFacilityStoreResponse;
+import KUIT.CatchTable.Dto.store.GetHotPlaceResponse;
 import KUIT.CatchTable.Dto.store.GetMenuStoreResponse;
 import KUIT.CatchTable.Dto.store.GetReviewStoreResponse;
 import java.util.List;
@@ -67,19 +68,18 @@ public class StoreDao {
                 ));
     }
 
-    public List<GetCategoryStoreResponse> getHotplaceStore() {
+    public List<GetHotPlaceResponse> getHotplaceStore() {
         String sql =
-                "select store.store_name, store.store_desc, store_image.store_image, avg(review.total_stars) as avg_score, count(review.total_stars) as count_score "
-                        + "from store join store_image on store.store_id = store_image.store_id "
-                        + "join review on store.store_id = review.store_id "
-                        + "where store.hot_place = true "
-                        + "group by store.store_name, store.store_desc, store_image.store_image";
-        return jdbcTemplate.query(sql, (rs, rowNum) -> new GetCategoryStoreResponse(
-                rs.getString("store_image"),
+                "select store.store_id, store.store_name, store.stars, category.category_name, store.address "
+                        + "from store join category on store.category_id = category.category_id "
+                        + "where store.hot_place = 1 "
+                        + "group by store.store_id, store.store_name, category.category_name, store.address";
+        return jdbcTemplate.query(sql, (rs, rowNum) -> new GetHotPlaceResponse(
+                rs.getLong("store_id"),
                 rs.getString("store_name"),
-                rs.getString("store_desc"),
-                rs.getFloat("avg_score"),
-                rs.getInt("count_score")
+                rs.getFloat("stars"),
+                rs.getString("category_name"),
+                rs.getString("address")
         ));
     }
 

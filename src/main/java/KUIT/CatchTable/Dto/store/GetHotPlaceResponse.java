@@ -7,11 +7,12 @@ import lombok.Setter;
 @Getter
 @Setter
 @AllArgsConstructor
-public class GetCategoryStoreResponse {
+public class GetHotPlaceResponse {
 
-    private String storeImage;
+    private long storeId;
     private String storeName;
-    private String storeDesc;
-    private float avgScore;
-    private int countScore;
+    private float stars;
+    private String categoryName;
+    private String address;
 }
+
