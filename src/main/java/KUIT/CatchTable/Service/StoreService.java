@@ -5,6 +5,7 @@ import KUIT.CatchTable.Dto.store.GetCategoryStoreResponse;
 import KUIT.CatchTable.Dto.store.GetDetailedStoreResponse;
 import KUIT.CatchTable.Dto.store.GetFacilityStoreResponse;
 import KUIT.CatchTable.Dto.store.GetMenuStoreResponse;
+import KUIT.CatchTable.Dto.store.GetReviewStoreResponse;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -45,5 +46,11 @@ public class StoreService {
         log.info("[StoreService.getHotplaceStore]");
 
         return storeDao.getHotplaceStore();
+    }
+
+    public List<GetReviewStoreResponse> getReviewStore(long storeId) {
+        log.info("[StoreService.getReviewStore]");
+
+        return storeDao.getReviewStore(storeId);
     }
 }
