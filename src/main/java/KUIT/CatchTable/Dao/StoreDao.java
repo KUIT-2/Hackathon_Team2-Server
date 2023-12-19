@@ -55,6 +55,7 @@ public class StoreDao {
                         + "join review on store.store_id = review.store_id "
                         + "where store.category_id = :categoryId "
                         + "group by store.store_name, store.store_desc, store_image.store_image";
+
         Map<String, Object> param = Map.of("categoryId", categoryId);
         return jdbcTemplate.query(sql, param,
                 (rs, rowNum) -> new GetCategoryStoreResponse(
