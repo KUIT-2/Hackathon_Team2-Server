@@ -1,14 +1,18 @@
 package KUIT.CatchTable.Service;
 
+import static KUIT.CatchTable.Common.response.BaseResponseStatus.DATABASE_ERROR;
+
 import KUIT.CatchTable.Dao.StoreDao;
 import KUIT.CatchTable.Dto.store.GetCategoryStoreResponse;
 import KUIT.CatchTable.Dto.store.GetDetailedStoreResponse;
 import KUIT.CatchTable.Dto.store.GetFacilityStoreResponse;
 import KUIT.CatchTable.Dto.store.GetMenuStoreResponse;
 import KUIT.CatchTable.Dto.store.GetReviewStoreResponse;
+import KUIT.CatchTable.Exception.StoreException;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -21,7 +25,11 @@ public class StoreService {
     public GetDetailedStoreResponse getDetailedStore(long storeId) {
         log.info("[StoreService.getDetail]");
 
-        return storeDao.getDetailedStore(storeId);
+        try {
+            return storeDao.getDetailedStore(storeId);
+        } catch (EmptyResultDataAccessException e) {
+            throw new StoreException(DATABASE_ERROR);
+        }
     }
 
 //    public GetFacilityStoreResponse getFacilityStore() {
@@ -33,13 +41,21 @@ public class StoreService {
     public List<GetCategoryStoreResponse> getCategoryStore(long categoryId) {
         log.info("[StoreService.getCategoryStore]");
 
-        return storeDao.getCategoryStore(categoryId);
+        try {
+            return storeDao.getCategoryStore(categoryId);
+        } catch (EmptyResultDataAccessException e) {
+            throw new StoreException(DATABASE_ERROR);
+        }
     }
 
     public List<GetMenuStoreResponse> getMenuStore(long storeId) {
         log.info("[StoreService.getMenuStore]");
 
-        return storeDao.getMenuStore(storeId);
+        try {
+            return storeDao.getMenuStore(storeId);
+        } catch (EmptyResultDataAccessException e) {
+            throw new StoreException(DATABASE_ERROR);
+        }
     }
 
     public List<GetCategoryStoreResponse> getHotplaceStore() {
@@ -51,6 +67,10 @@ public class StoreService {
     public List<GetReviewStoreResponse> getReviewStore(long storeId) {
         log.info("[StoreService.getReviewStore]");
 
-        return storeDao.getReviewStore(storeId);
+        try {
+            return storeDao.getReviewStore(storeId);
+        } catch (EmptyResultDataAccessException e) {
+            throw new StoreException(DATABASE_ERROR);
+        }
     }
 }
