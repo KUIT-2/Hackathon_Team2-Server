@@ -22,7 +22,7 @@ import static KUIT.CatchTable.util.BindingResultUtils.getErrorMessages;
 @Slf4j
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/users")
+@RequestMapping("/user")
 public class UserController {
     private final UserService userService;
 
