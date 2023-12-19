@@ -33,7 +33,7 @@ public class ReservationController {
     /**
      * 예약 가능 시간 조회
      */
-    @GetMapping("?store_id={storeId}&day={day}&possible_people_number={possible_people_number}")
+    @GetMapping("")
     public BaseResponse<List<GetReservationResponse>> getPossibleReservationTime(
             @RequestParam(required = false, defaultValue = "") long storeId,
             @RequestParam(required = false, defaultValue = "") String day,
