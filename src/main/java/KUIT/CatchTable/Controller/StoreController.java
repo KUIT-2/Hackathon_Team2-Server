@@ -37,7 +37,7 @@ public class StoreController {
     /**
      * 카테고리별 가게 리스트
      */
-    @GetMapping("/{categoryId}")
+    @GetMapping("/category/{categoryId}")
     public BaseResponse<List<GetCategoryStoreResponse>> getCategoryStore(
             @PathVariable("categoryId") long categoryId) {
         log.info("[StoreController.getCategoryStore]");
