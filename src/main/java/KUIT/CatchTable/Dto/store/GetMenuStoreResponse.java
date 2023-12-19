@@ -2,11 +2,11 @@ package KUIT.CatchTable.Dto.store;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 
 @Getter
-@NoArgsConstructor
 @AllArgsConstructor
-public class GetFacilityStoreResponse {
+public class GetMenuStoreResponse {
 
+    private String menuName;
+    private String price;
 }
